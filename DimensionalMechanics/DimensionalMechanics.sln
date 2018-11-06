@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "DimensionalMechanics", "DimensionalMechanics\DimensionalMechanics.pyproj", "{DDE1C323-032A-4015-A44E-0BF704EAF30F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDE1C323-032A-4015-A44E-0BF704EAF30F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE1C323-032A-4015-A44E-0BF704EAF30F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AFB0C856-ED0F-49D4-9A9F-F569D97F994F}
+	EndGlobalSection
+EndGlobal
