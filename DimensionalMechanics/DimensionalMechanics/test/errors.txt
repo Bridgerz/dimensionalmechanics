@@ -1,0 +1,3 @@
+Path								Error
+C:\Users\pjdoe\root\testing\test\cat\test error.txt		file size is zero
+C:\Users\pjdoe\root\testing\test\dog\test file type.txt		wrong file type

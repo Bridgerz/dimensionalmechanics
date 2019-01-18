@@ -1,0 +1,8 @@
+Class Name	Label	Num Files
+cat		0	3
+dog		1	3
+
+Total Files: 6
+
+Omitted Files:
+C:\Users\pjdoe\root\testing\test\cat\kitten.png
