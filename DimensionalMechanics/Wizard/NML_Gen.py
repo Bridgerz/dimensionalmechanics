@@ -17,24 +17,24 @@ def GenerateFile(inputDict):
     if not "channels" in inputDict.keys():
         channels = ''
     else:
-        channels = inputDict["channels"]
+        channels = str(inputDict["channels"])
 
     if not "bands" in inputDict.keys():
         bands = ''
     else:
-        bands = inputDict["bands"]
+        bands = str(inputDict["bands"])
 
     if not "validationSplit" in inputDict.keys():
         validationSplit = '0.2'
     else:
-        validationSplit = inputDict["validationSplit"]
+        validationSplit = str(inputDict["validationSplit"])
 
     #flat = inputDict["flat"]
     flat = "10"
 
         
 
-
+    
     #create file if path does not exist
     with open(os.path.join(directory, 'GEN_NML'), 'w+') as f:
         f.writelines(['oracle(\"mode\") = \"classification\"' + '\n',
@@ -42,8 +42,8 @@ def GenerateFile(inputDict):
                      'source:' + '\n',
                      '  bind = \"' + directory + '\" ;' + '\n',
                      '  input:' + '\n',
-                     '    x ~ from "path"' + '\n'])
-        if dataType == 'image' or dataType == 'video':
+                     '    x ~ from "Path"' + '\n'])
+        if dataType == 0 or dataType == 1:
             shape = ''
             if performance == 0:
                 shape = LOWSHAPE
@@ -55,7 +55,7 @@ def GenerateFile(inputDict):
             f.writelines(['      -> image: [shape=[' + shape + ', ' + shape + '], channels=' + channels + ']' + '\n',
                          '      -> ImageDataGenerator: [rescale= 0.003921568627451] ;' + '\n'])
 
-        elif dataType == 'audio':
+        elif dataType == 2:
             f.writelines(['        -> audio: [maxlen = ' + MAXLEN + ', bands = ' + bands + ']' + '\n',
                          '        -> AudioDataGenerator: [];' + '\n'])
         
@@ -76,11 +76,11 @@ def GenerateFile(inputDict):
                      '    validation_split = ' + validationSplit + ' ;' + '\n',
                      '\n',
                      'architecture:' + '\n'])
-        if dataType == 'image':
+        if dataType == 0:
             f.write('  input:  x ~ image: [shape=[' + shape + ', ' + shape + '], channels=' + channels + '] ;' + '\n')
-        elif dataType == 'audio':
+        elif dataType == 2:
             f.write('  input: x ~ audio: [maxlen = ' + MAXLEN + ', bands = ' + bands + '];' + '\n')
-        elif dataType == 'video':
+        elif dataType == 1:
             f.write('  input: x ~ video: [shape=[' + shape + ', ' + shape + '], channels=' + channels + '] ;' + '\n')
 
         f.writelines(['  output: y ~ flat: ['+ flat +'] ;' + '\n',
@@ -94,5 +94,5 @@ def GenerateFile(inputDict):
                      '    metrics = [\'accuracy\'] ;' + '\n',
                      '\n',
                      '  run:' + '\n',
-                     '    epochs = 4 ;' + '\n',
+                     '    epochs = 4 ;' + '\n\n',
                      '  dashboard: ;' + '\n'])

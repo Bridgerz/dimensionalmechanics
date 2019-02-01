@@ -3,7 +3,9 @@ oracle("mode") = "classification"
 source:
   bind = "C:\Users\Bridger Zoske\Desktop\SmartTix2\dimensionalmechanics\DimensionalMechanics\DimensionalMechanics\test" ;
   input:
-    x ~ from "path"
+    x ~ from "Path"
+      -> image: [shape=[24, 24], channels=1]
+      -> ImageDataGenerator: [rescale= 0.003921568627451] ;
   output:
     y ~ from "Label"
       -> flat: [10]
@@ -13,6 +15,7 @@ source:
     validation_split = 0.2 ;
 
 architecture:
+  input:  x ~ image: [shape=[24, 24], channels=1] ;
   output: y ~ flat: [10] ;
 
   x -> auto- > y;
