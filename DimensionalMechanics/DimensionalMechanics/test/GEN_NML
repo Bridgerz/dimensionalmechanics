@@ -1,0 +1,28 @@
+oracle("mode") = "classification"
+
+source:
+  bind = "C:\Users\Bridger Zoske\Desktop\SmartTix2\dimensionalmechanics\DimensionalMechanics\DimensionalMechanics\test" ;
+  input:
+    x ~ from "path"
+  output:
+    y ~ from "Label"
+      -> flat: [10]
+      -> FlatDataGenerator: [] ;
+  params:
+    batch_size = 16,
+    validation_split = 0.2 ;
+
+architecture:
+  output: y ~ flat: [10] ;
+
+  x -> auto- > y;
+
+train:
+  compile:
+    optimizer = auto,
+    loss = auto,
+    metrics = ['accuracy'] ;
+
+  run:
+    epochs = 4 ;
+  dashboard: ;
