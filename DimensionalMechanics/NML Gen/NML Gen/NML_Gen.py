@@ -1,19 +1,27 @@
-def GenerateFile():
-    import os
+import os
+def GenerateFile(inputDict):
+    #constants
+    MAXLEN = '1366'
+    NBANDS = '96'
+    LOWSHAPE = '24'
+    MEDSHAPE = '32'
+    HIGHSHAPE = '128'
+    LOWBATCH = '16'
+    MEDBATCH = '64'
+    HIGHBATCH = '1024'
 
-    directory = "C:\\Users\\Bridger Zoske\\testing\\test\\NMLGen.NML"
-    dataType = "image" 
-    performance = "low,med,high"
-    #video and image
-    channels = "testCannels"
-    shape = "30"
-    #audio
-    maxlen = "1366"
-    nbands = "96"
-    #all
+    directory = inputDict["directory"]
+    mode = inputDict["mode"]
+    dataType = inputDict["type"]
+    performance = inputDict["performance"]
+    channels = inputDict["channels"]
+
+    #flat = inputDict["flat"]
     flat = "10"
-    validationSplit = "0.2"
-    batch_size = "5"
+    validationSplit = inputDict["validationSplit"]
+    if validationSplit == '':
+        validationSplit = '0.2'
+
 
     #create file if path does not exist
     if not os.path.exists(directory):
@@ -28,20 +36,27 @@ def GenerateFile():
                  '  bind = \"' + directory + '\" ;' + '\n',
                  '  input:' + '\n',
                  '    x ~ from "path"' + '\n'])
-    if (dataType == "image"):
-        #TODO: set shape based off performance
+    if dataType == 'image' or dataType == 'video':
+        if performance == 'low':
+            shape = LOWSHAPE
+        elif performance == 'medium':
+            shape = MEDSHAPE
+        elif performance == 'high':
+            shape = HIGHSHAPE
+
         f.writelines(['      -> image: [shape=[' + shape + ', ' + shape + '], channels=' + channels + ']' + '\n',
                      '      -> ImageDataGenerator: [rescale= 0.003921568627451] ;' + '\n'])
-    elif (dataType == "video"):
-        #TODO: set shape based off performance
-        f.writelines(['      -> video: [shape=[' + shape + ', ' + shape + '], channels=' + channels + ']' + '\n',
-                     '      -> ImageDataGenerator: [];' + '\n'])
-    elif (dataType == "audio"):
-        #TODO: set maxlen and nbands baased off performance
-        f.writelines(['        -> audio: [maxlen = ' + maxlen + ', nbands = ' + nbands + ']' + '\n',
+
+    elif dataType == 'audio':
+        f.writelines(['        -> audio: [maxlen = ' + MAXLEN + ', nbands = ' + NBANDS + ']' + '\n',
                      '        -> AudioDataGenerator: [];' + '\n'])
-    
-    #TODO: set batch_size based off performance
+    if performance == 'low':
+        batch_size = LOWBATCH
+    elif performance == 'medium':
+        batch_size = MEDBATCH
+    elif performance == 'high':
+        batch_size = HIGHBATCH
+
     f.writelines(['  output:' + '\n',
                  '    y ~ from "Label"' + '\n',
                  '      -> flat: ['+ flat +']' + '\n',
@@ -51,11 +66,11 @@ def GenerateFile():
                  '    validation_split = ' + validationSplit + ' ;' + '\n',
                  '\n',
                  'architecture:' + '\n'])
-    if (dataType == "image"):
+    if dataType == 'image':
         f.write('  input:  x ~ image: [shape=[' + shape + ', ' + shape + '], channels=' + channels + '] ;' + '\n')
-    elif (dataType == "audio"):
-        f.write('  input: x ~ audio: [maxlen = ' + maxlen + ', nbands = ' + nbands + '];' + '\n')
-    elif (dataType == "video"):
+    elif dataType == 'audio':
+        f.write('  input: x ~ audio: [maxlen = ' + MAXLEN + ', nbands = ' + NBANDS + '];' + '\n')
+    elif dataType == 'video':
         f.write('  input: x ~ video: [shape=[' + shape + ', ' + shape + '], channels=' + channels + '] ;' + '\n')
 
     f.writelines(['  output: y ~ flat: ['+ flat +'] ;' + '\n',
@@ -72,4 +87,3 @@ def GenerateFile():
                  '    epochs = 4 ;' + '\n',
                  '  dashboard: ;' + '\n'])
     f.close()
-GenerateFile()
